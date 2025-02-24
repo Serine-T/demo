@@ -1,7 +1,5 @@
 import logging
-from commons.exception import ApplicationException
-
-logging.basicConfig(level=logging.INFO)
+import json
 
 def handle_request(event, context):
     try:
@@ -27,4 +25,5 @@ def handle_request(event, context):
         }
 
 def lambda_handler(event, context):
-    return handle_request(event, context)
+    response = handle_request(event, context)
+    return json.loads(json.dumps(response))  # Ensure correct JSON formatting
