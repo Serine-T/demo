@@ -14,19 +14,11 @@ def handle_request(event, context):
                 "message": "Hello from Lambda"
             }
 
-        raise ApplicationException(
-            400,
-            {
-                "statusCode": 400,
-                "message": "Bad request syntax or unsupported method. Request path: /cmtr-5f9b79e5. HTTP method: GET"
-            }
-        )
-
-    except ApplicationException as e:
         return {
-            "statusCode": e.statusCode,
-            "message": e.message["message"]
+            "statusCode": 400,
+            "message": "Bad request syntax or unsupported method. Request path: /cmtr-5f9b79e5. HTTP method: GET"
         }
+
     except Exception as e:
         logging.error(f"Unexpected error: {str(e)}")
         return {
@@ -34,4 +26,5 @@ def handle_request(event, context):
             "message": "Internal server error"
         }
 
-lambda_handler = handle_request
+def lambda_handler(event, context):
+    return handle_request(event, context)
