@@ -1,36 +1,31 @@
-import logging
-import json
-
-# def handle_request(event, context):
-#     try:
-#         path = event.get("path")
-#         method = event.get("httpMethod")
-
-#         if path == "/hello" and method == "GET":
-#             return {
-#                 "statusCode": 200,
-#                 "message": "Hello from Lambda"
-#             }
-
-#         return {
-#             "statusCode": 400,
-#             "message": "Bad request syntax or unsupported method. Request path: /cmtr-5f9b79e5. HTTP method: GET"
-#         }
-
-#     except Exception as e:
-#         logging.error(f"Unexpected error: {str(e)}")
-#         return {
-#             "statusCode": 500,
-#             "message": "Internal server error"
-#         }
-
 def handle_request(event, context):
+    import json
+    import logging
+
+    logging.basicConfig(level=logging.INFO)
+    logging.info(f"Received event: {json.dumps(event, indent=2)}")
+
+    path = event.get("rawPath", "")
+    method = event.get("requestContext", {}).get("http", {}).get("method", "")
+
+    logging.info(f"Extracted path: {path}, method: {method}")
+
+    if path.rstrip("/") == "/hello" and method == "GET":
+        return {
+            "statusCode": 200,
+            "body": json.dumps({
+                "statusCode": 200,
+                "message": "Hello from Lambda"
+            })
+        }
+
     return {
-        "statusCode": 200,
-        "message": "Hello from Lambda"
+        "statusCode": 400,
+        "body": json.dumps({
+            "statusCode": 400,
+            "message": f"Bad request syntax or unsupported method. Request path: {path}. HTTP method: {method}"
+        })
     }
 
-
 def lambda_handler(event, context):
-    response = handle_request(event, context)
-    return json.loads(json.dumps(response))  # Ensure correct JSON formatting
+    return handle_request(event, context)
