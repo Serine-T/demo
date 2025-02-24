@@ -28,7 +28,7 @@ class HelloWorld:
             400,
             {
                 'statusCode': 400,
-                'message': f'Bad request syntax or unsupported method. Request path: cmtr-5f9b79e5-hello_world-tm1q. HTTP method: GET'  
+                'message': f'Bad request syntax or unsupported method. Request path: /cmtr-5f9b79e5. HTTP method: GET'  
             }
         )
 
