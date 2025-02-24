@@ -3,23 +3,16 @@ from commons.exception import ApplicationException
 
 logging.basicConfig(level=logging.INFO)
 
-class HelloWorld:
-    def handle_request(self, event, context):
-        logging.info(f"Received event: {event}")
-        self.validate_request(event)
-        return {
-            "statusCode": 200,
-            "message": "Hello from Lambda"
-        }
-
-    def validate_request(self, event):
+def handle_request(event, context):
+    try:
         path = event.get("path")
         method = event.get("httpMethod")
-        logging.info(f"Request path: {path}, HTTP method: {method}")
 
         if path == "/hello" and method == "GET":
-            logging.info(f"Received valid request: {path}")
-            return
+            return {
+                "statusCode": 200,
+                "message": "Hello from Lambda"
+            }
 
         raise ApplicationException(
             400,
@@ -29,12 +22,7 @@ class HelloWorld:
             }
         )
 
-def lambda_handler(event, context):
-    handler = HelloWorld()
-    try:
-        return handler.handle_request(event, context)
     except ApplicationException as e:
-        logging.error(f"Application error: {e.message}")
         return {
             "statusCode": e.statusCode,
             "message": e.message["message"]
@@ -45,3 +33,5 @@ def lambda_handler(event, context):
             "statusCode": 500,
             "message": "Internal server error"
         }
+
+lambda_handler = handle_request

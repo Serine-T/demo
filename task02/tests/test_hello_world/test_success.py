@@ -1,40 +1,39 @@
 import unittest
-from src.lambdas.hello_world.handler import HelloWorld
+from src.lambdas.hello_world.handler import handle_request
 from commons.exception import ApplicationException
 
 class TestHelloWorld(unittest.TestCase):
-    def setUp(self):
-        self.HANDLER = HelloWorld()
-
     def test_success(self):
         event = {
-            'path': '/hello',
-            'httpMethod': 'GET'
+            "path": "/hello",
+            "httpMethod": "GET"
         }
-        response = self.HANDLER.handle_request(event, dict())
-        self.assertEqual(response['statusCode'], 200)
-        self.assertEqual(response['message'], 'Hello from Lambda')  # Fixed message check
+        response = handle_request(event, dict())
+        self.assertEqual(response["statusCode"], 200)
+        self.assertEqual(response["message"], "Hello from Lambda")
 
     def test_bad_request(self):
         event = {
-            'path': '/student_id',
-            'httpMethod': 'GET'
+            "path": "/student_id",
+            "httpMethod": "GET"
         }
-        with self.assertRaises(ApplicationException) as context:
-            self.HANDLER.handle_request(event, dict())
-
-        self.assertEqual(context.exception.statusCode, 400)
-        self.assertIn('Bad request syntax or unsupported method', context.exception.message['message'])
+        response = handle_request(event, dict())
+        self.assertEqual(response["statusCode"], 400)
+        self.assertEqual(
+            response["message"],
+            "Bad request syntax or unsupported method. Request path: /cmtr-5f9b79e5. HTTP method: GET"
+        )
 
         event = {
-            'path': '/hello',
-            'httpMethod': 'POST'
+            "path": "/hello",
+            "httpMethod": "POST"
         }
-        with self.assertRaises(ApplicationException) as context:
-            self.HANDLER.handle_request(event, dict())
+        response = handle_request(event, dict())
+        self.assertEqual(response["statusCode"], 400)
+        self.assertEqual(
+            response["message"],
+            "Bad request syntax or unsupported method. Request path: /cmtr-5f9b79e5. HTTP method: GET"
+        )
 
-        self.assertEqual(context.exception.statusCode, 400)
-        self.assertIn('Bad request syntax or unsupported method', context.exception.message['message'])
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
