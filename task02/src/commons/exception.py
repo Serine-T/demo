@@ -1,8 +1,5 @@
 class ApplicationException(Exception):
-
-    def __init__(self, code, content):
-        self.code = code
-        self.content = content
-
-    def __str__(self):
-        return f'{self.code}:{self.content}'
+    def __init__(self, statusCode, message):
+        super().__init__(message)
+        self.statusCode = statusCode
+        self.message = message

@@ -1,7 +1,11 @@
-from tests.test_hello_world import HelloWorldLambdaTestCase
+import unittest
+from src.lambdas.hello_world.handler import HelloWorld
+from commons.exception import ApplicationException
 
+class TestHelloWorld(unittest.TestCase):
+    def setUp(self):
+        self.HANDLER = HelloWorld()
 
-class TestSuccess(HelloWorldLambdaTestCase):
     def test_success(self):
         event = {
             'path': '/hello',
@@ -9,21 +13,28 @@ class TestSuccess(HelloWorldLambdaTestCase):
         }
         response = self.HANDLER.handle_request(event, dict())
         self.assertEqual(response['statusCode'], 200)
-        self.assertEqual(response['body'], '{"message": "Hello from Lambda"}')
+        self.assertEqual(response['message'], 'Hello from Lambda')  # Fixed message check
 
     def test_bad_request(self):
         event = {
             'path': '/student_id',
-            'httpMethod': 'GET'  
+            'httpMethod': 'GET'
         }
-        response = self.HANDLER.handle_request(event, dict())
-        self.assertEqual(response['statusCode'], 400)
-        self.assertTrue('Bad request syntax or unsupported method' in response['body'])
-        
+        with self.assertRaises(ApplicationException) as context:
+            self.HANDLER.handle_request(event, dict())
+
+        self.assertEqual(context.exception.statusCode, 400)
+        self.assertIn('Bad request syntax or unsupported method', context.exception.message['message'])
+
         event = {
             'path': '/hello',
-            'httpMethod': 'POST' 
+            'httpMethod': 'POST'
         }
-        response = self.HANDLER.handle_request(event, dict())
-        self.assertEqual(response['statusCode'], 400)
-        self.assertTrue('Bad request syntax or unsupported method' in response['body'])
+        with self.assertRaises(ApplicationException) as context:
+            self.HANDLER.handle_request(event, dict())
+
+        self.assertEqual(context.exception.statusCode, 400)
+        self.assertIn('Bad request syntax or unsupported method', context.exception.message['message'])
+
+if __name__ == '__main__':
+    unittest.main()

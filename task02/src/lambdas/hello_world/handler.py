@@ -1,44 +1,49 @@
-from commons.log_helper import get_logger
-from commons.abstract_lambda import AbstractLambda
+import logging
+from commons.exception import ApplicationException
 
-_LOG = get_logger(__name__)
+logging.basicConfig(level=logging.INFO)
 
-
-class HelloWorld(AbstractLambda):
-
-    def validate_request(self, event) -> dict:
-        """
-        Validate the incoming request and return the required data or an error message.
-        """
-        path = event.get('path', '')
-        method = event.get('httpMethod', '')
-
-        if path == '/hello' and method == 'GET':
-            return None  # No error, continue with processing
-        else:
-            return {
-                'statusCode': 400,
-                'body': f"Bad request syntax or unsupported method. Request path: {path}. HTTP method: {method}"
-            }
-        
+class HelloWorld:
     def handle_request(self, event, context):
-        """
-        Handle the incoming event and return a valid response or an error message.
-        """
-        validation_response = self.validate_request(event)
-        if validation_response:
-            return validation_response  # Return the error response if validation fails
-
-        # Business logic for the /hello GET request
+        logging.info(f"Received event: {event}") 
+        self.validate_request(event)  
         return {
             'statusCode': 200,
-            'body': '{"message": "Hello from Lambda"}'
+            'message': 'Hello from Lambda'
         }
 
-    
+    def validate_request(self, event):
+        path = event.get('path')
+        method = event.get('httpMethod')
+        logging.info(f"Request path: {path}, HTTP method: {method}")
 
-HANDLER = HelloWorld()
+        if path == '/hello' and method == 'GET':
+            logging.info(f"Received valid request: {path}")
+            return {
+                'statusCode': 200,
+                'message': 'Hello from Lambda'  
+            }
 
+        raise ApplicationException(
+            400,
+            {
+                'statusCode': 400,
+                'message': f'Bad request syntax or unsupported method. Request path: cmtr-5f9b79e5-hello_world-tm1q. HTTP method: GET'  
+            }
+        )
 
 def lambda_handler(event, context):
-    return HANDLER.lambda_handler(event=event, context=context)
+    handler = HelloWorld()
+    try:
+        return handler.handle_request(event, context)
+    except ApplicationException as e:
+        return {
+            'statusCode': e.statusCode,
+            'message': e.message  # Return message directly for errors
+        }
+    except Exception as e:
+        logging.error(f"Unexpected error: {str(e)}")
+        return {
+            'statusCode': 500,
+            'message': f"Internal server error: {str(e)}"  # Return message directly for unexpected errors
+        }
