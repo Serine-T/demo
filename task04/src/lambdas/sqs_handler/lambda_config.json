@@ -12,7 +12,7 @@
   "event_sources": [
     {
       "type": "sqs",
-      "source": "arn:aws:sqs:eu-central-1:905418349556:cmtr-5f9b79e5-async_queue-8fb0",
+      "source": "arn:aws:sqs:eu-central-1:905418349556:cmtr-5f9b79e5-async_queue",
       "target": "arn:aws:lambda:eu-central-1:905418349556:function:sqs_handler"
     }
   ],
