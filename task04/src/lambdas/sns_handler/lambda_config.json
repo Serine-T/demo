@@ -13,7 +13,7 @@
     {
       "type": "sns",
       "source": "arn:aws:sns:eu-central-1:905418349556:cmtr-5f9b79e5-lambda_topic",
-      "target": "arn:aws:lambda:eu-central-1:905418349556:function:sns_handler"
+      "target": "arn:aws:lambda:eu-central-1:905418349556:function:cmtr-5f9b79e5-sns_handler"
     }
   ],
   "env_variables": {},
