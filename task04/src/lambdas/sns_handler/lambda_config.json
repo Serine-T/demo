@@ -11,8 +11,9 @@
   "dependencies": [],
   "event_sources": [
     {
-      "type": "sns",
-      "topic_name": "lambda_topic"
+      "resource_type": "sns_topic_trigger",
+      "target_topic": "lambda_topic",
+      "region": "eu-central-1"
     }
   ],
   "env_variables": {},
@@ -20,6 +21,5 @@
   "alias": "${lambdas_alias_name}",
   "url_config": {},
   "ephemeral_storage": 512,
-  "logs_expiration": "${logs_expiration}",
   "tags": {}
 }
