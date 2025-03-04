@@ -11,7 +11,8 @@
   "dependencies": [],
   "event_sources": [
     {
-      "type": "sns"
+      "type": "sns",
+      "topic_name": "lambda_topic"
     }
   ],
   "env_variables": {},

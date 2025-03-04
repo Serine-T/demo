@@ -11,7 +11,8 @@
   "dependencies": [],
   "event_sources": [
     {
-      "type": "sqs"
+      "type": "sqs",
+      "queue_name": "async_queue"
     }
   ],
   "env_variables": {},
