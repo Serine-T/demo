@@ -1,13 +1,13 @@
 import json
-import boto3
 
 def lambda_handler(event, context):
-    sqs = boto3.client('sqs')
-    
-    print("AWS SDK (boto3) is available in Lambda environment.")
-    
-    # Return a success message
+    print("Received event: ", json.dumps(event, indent=2))
+
+    for record in event['Records']:
+        sqs_message = record['body']  # Extracting message body
+        print(f"Message received from SQS: {sqs_message}")
+
     return {
         'statusCode': 200,
-        'body': json.dumps({'message': 'SDK loaded successfully'})
+        'body': json.dumps({'message': 'SQS message processed successfully'})
     }
