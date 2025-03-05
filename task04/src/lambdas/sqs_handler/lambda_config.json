@@ -13,9 +13,8 @@
     {
       "resource_type": "sqs_trigger",
       "target_queue": "async_queue",
-      "batch_size": 1,
-      "batch_window": 1,
-      "function_response_types": ["ReportBatchItemFailures"]
+      "batch_size": 100,
+      "batch_window": 100
     }
   ],
   "env_variables": {},
