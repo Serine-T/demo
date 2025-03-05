@@ -6,7 +6,7 @@
   "iam_role_name": "sns_handler-role",
   "runtime": "python3.10",
   "memory": 128,
-  "timeout": 100,
+  "timeout": 300,
   "lambda_path": "lambdas/sns_handler",
   "dependencies": [
     { "resource_name": "lambda_topic", "resource_type": "sns_topic" }
