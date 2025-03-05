@@ -1,58 +1,65 @@
-const { DynamoDBClient, PutItemCommand } = require("@aws-sdk/client-dynamodb");
+const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
+const { DynamoDBDocumentClient, PutCommand } = require("@aws-sdk/lib-dynamodb");
 const { v4: uuidv4 } = require("uuid");
 
-// Environment variable injected via Syndicate aliases (syndicate_aliases.yml)
-const TABLE_NAME = process.env.TARGET_TABLE || "Events";
-
-const dynamoDbClient = new DynamoDBClient();
-
+// Initialize DynamoDB client with explicit region
+const client = new DynamoDBClient({ region: "eu-central-1" });
+const dynamoDB = DynamoDBDocumentClient.from(client);
+const TABLE_NAME = process.env.TARGET_TABLE;
 exports.handler = async (event) => {
-    try {
-        const body = JSON.parse(event.body);
+  console.log("Event received:", JSON.stringify(event, null, 2));
+  console.log("Resolved TABLE_NAME:", TABLE_NAME);
 
-        const principalId = body.principalId;
-        const content = body.content;
+  try {
+    // Parse the request body if needed
+    const requestBody = event.body ? JSON.parse(event.body) : event;
 
-        if (typeof principalId !== 'number' || !content || typeof content !== 'object') {
-            return {
-                statusCode: 400,
-                body: JSON.stringify({ message: "Invalid request body" }),
-            };
-        }
-
-        const createdAt = new Date().toISOString();
-        const id = uuidv4();
-
-        const dynamoItem = {
-            id: { S: id },
-            principalId: { N: principalId.toString() },
-            createdAt: { S: createdAt },
-            body: { S: JSON.stringify(content) }
-        };
-
-        const command = new PutItemCommand({
-            TableName: TABLE_NAME,
-            Item: dynamoItem,
-        });
-
-        await dynamoDbClient.send(command);
-
-        const savedEvent = {
-            id,
-            principalId,
-            createdAt,
-            body: content,
-        };
-
-        return {
-            statusCode: 201,
-            body: JSON.stringify({ statusCode: 201, event: savedEvent }),
-        };
-    } catch (error) {
-        console.error("Error handling event:", error);
-        return {
-            statusCode: 500,
-            body: JSON.stringify({ message: "Internal server error" }),
-        };
+    // Validate required fields
+    if (!requestBody.principalId || !requestBody.content) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({
+          message: "Missing required fields: principalId or content",
+        }),
+      };
     }
+
+    // Create the event object with the exact format required
+    const newEvent = {
+      id: uuidv4(),
+      principalId: requestBody.principalId,
+      createdAt: new Date().toISOString(),
+      body: requestBody.content,
+    };
+
+    console.log("Saving to DynamoDB table:", TABLE_NAME);
+    console.log("Item:", JSON.stringify(newEvent, null, 2));
+
+    // Save to DynamoDB
+    await dynamoDB.send(
+      new PutCommand({
+        TableName: TABLE_NAME,
+        Item: newEvent,
+      })
+    );
+
+    // Return the response in the EXACT format required
+    return {
+      statusCode: 201,
+      body: JSON.stringify({
+        statusCode: 201,
+        event: newEvent,
+      }),
+    };
+  } catch (error) {
+    console.error("Error:", error);
+
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: "Internal server error",
+        error: error.message,
+      }),
+    };
+  }
 };

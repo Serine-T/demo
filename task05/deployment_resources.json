@@ -7,7 +7,6 @@
             "logs:CreateLogGroup",
             "logs:CreateLogStream",
             "logs:PutLogEvents",
-            "logs:PutLogEvents",
             "dynamodb:GetItem",
             "dynamodb:Query",
             "dynamodb:PutItem",
@@ -20,12 +19,7 @@
             "lambda:InvokeFunction"
           ],
           "Effect": "Allow",
-          "Resource": "arn:aws:logs:*:*:*"
-        },
-        {
-          "Action": ["dynamodb:PutItem"],
-          "Effect": "Allow",
-          "Resource": "arn:aws:dynamodb:*:*:table/${target_table}"
+          "Resource": "*"
         }
       ],
       "Version": "2012-10-17"
@@ -56,12 +50,12 @@
     },
     "tags": {}
   },
-  "Events": {
+  "${target_table}": {
     "resource_type": "dynamodb_table",
     "hash_key_name": "id",
     "hash_key_type": "S",
-    "read_capacity": 5,
-    "write_capacity": 5,
+    "read_capacity": 1,
+    "write_capacity": 1,
     "global_indexes": [],
     "autoscaling": [],
     "tags": {}
