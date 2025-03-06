@@ -6,7 +6,9 @@
   "scripts": {},
   "author": "",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "aws-sdk": "^2.1692.0"
+  },
   "runtime": "nodejs20.x",
   "memory": 128,
   "timeout": 100,
