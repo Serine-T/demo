@@ -8,6 +8,9 @@ const AUDIT_TABLE = process.env.AUDIT_TABLE;
 exports.handler = async (event) => {
   const records = event.Records || [];
 
+  console.log("AUDIT_TABLE", AUDIT_TABLE);
+
+  // Loop through the records
   for (const record of records) {
     if (record.eventName !== "INSERT" && record.eventName !== "MODIFY") {
       continue; // Only care about new/updated items
@@ -20,12 +23,17 @@ exports.handler = async (event) => {
       record.dynamodb.OldImage || {}
     );
 
+    // Constructing the audit entry
     const auditEntry = {
       id: uuidv4(),
+      principalId: newItem.principalId || "unknown", // Add the principalId
+      createdAt: new Date().toISOString(), // Add createdAt
+      body: newItem, // Assuming the 'body' is the newItem
       itemKey: newItem.key,
       modificationTime: new Date().toISOString(),
     };
 
+    // If the event is INSERT, add the new value
     if (record.eventName === "INSERT") {
       auditEntry.newValue = newItem;
     } else if (record.eventName === "MODIFY") {
@@ -39,13 +47,23 @@ exports.handler = async (event) => {
       Object.assign(auditEntry, changes);
     }
 
-    await dynamodb
-      .put({
-        TableName: AUDIT_TABLE,
-        Item: auditEntry,
-      })
-      .promise();
+    // Save the audit entry to DynamoDB
+    try {
+      await dynamodb
+        .put({
+          TableName: AUDIT_TABLE,
+          Item: auditEntry,
+        })
+        .promise();
+    } catch (error) {
+      console.error("Error saving audit entry to DynamoDB:", error);
+      throw new Error("Error saving audit entry to DynamoDB");
+    }
   }
 
-  return { status: "success" };
+  // Return a proper response with statusCode 201
+  return {
+    statusCode: 201,
+    body: JSON.stringify({ message: "Audit entry created successfully" }),
+  };
 };
