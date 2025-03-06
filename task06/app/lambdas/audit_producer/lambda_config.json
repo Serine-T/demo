@@ -8,12 +8,19 @@
   "memory": 128,
   "timeout": 100,
   "lambda_path": "lambdas/audit_producer",
-  "dependencies": [],
+  "dependencies": [
+    {
+      "resource_name": "Configuration",
+      "resource_type": "dynamodb_table"
+    }
+  ],
   "event_sources": [
     {
-      "type": "dynamodb",
-      "batch_size": 100,
-      "starting_position": "LATEST"
+      "resource_type": "dynamodb_trigger",
+      "target_table": "Configuration",
+      "batch_size": 10,
+      "starting_position": "LATEST",
+      "function_response_types": ["ReportBatchItemFailures"]
     }
   ],
   "env_variables": {

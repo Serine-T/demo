@@ -30,13 +30,12 @@
     "hash_key_name": "key",
     "hash_key_type": "S",
     "read_capacity": 5,
-    "write_capacity": 5,
+    "write_capacity": 1,
+    "stream_enabled": true,
+    "stream_view_type": "NEW_AND_OLD_IMAGES",
     "global_indexes": [],
     "autoscaling": [],
-    "tags": {
-      "Environment": "dev",
-      "Owner": "team"
-    }
+    "tags": {}
   },
   "Audit": {
     "resource_type": "dynamodb_table",
@@ -45,12 +44,9 @@
     "sort_key_name": "timestamp",
     "sort_key_type": "N",
     "read_capacity": 5,
-    "write_capacity": 5,
+    "write_capacity": 1,
     "global_indexes": [],
     "autoscaling": [],
-    "tags": {
-      "Environment": "dev",
-      "Owner": "team"
-    }
+    "tags": {}
   }
 }

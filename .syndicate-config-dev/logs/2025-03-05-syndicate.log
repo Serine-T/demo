@@ -1,0 +1,52 @@
+2025-03-05 23:57:51,811 [INFO] USER:serinetovmasyan handlers.py:106:syndicate LOG: Configuration used: /Users/serinetovmasyan/Desktop/epam/demo/.syndicate-config-dev
+2025-03-05 23:57:51,811 [ERROR] USER:serinetovmasyan decorators.py:136:wrapper LOG: sdct.conf does not exist inside /Users/serinetovmasyan/Desktop/epam/demo/.syndicate-config-dev folder
+2025-03-05 23:57:51,812 [ERROR] USER:serinetovmasyan decorators.py:137:wrapper LOG: Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/syndicate/core/decorators.py", line 134, in wrapper
+    return_code = func(*args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/syndicate/core/handlers.py", line 107, in syndicate
+    initialize_connection()
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/syndicate/core/__init__.py", line 106, in initialize_connection
+    CONFIG = ConfigHolder(CONF_PATH)
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/syndicate/core/conf/processor.py", line 63, in __init__
+    self._init_conf_config(dir_path=dir_path)
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/syndicate/core/conf/processor.py", line 92, in _init_conf_config
+    raise AssertionError(
+AssertionError: sdct.conf does not exist inside /Users/serinetovmasyan/Desktop/epam/demo/.syndicate-config-dev folder
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/syndicate/core/decorators.py", line 134, in wrapper
+    return_code = func(*args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/syndicate/core/handlers.py", line 107, in syndicate
+    initialize_connection()
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/syndicate/core/__init__.py", line 106, in initialize_connection
+    CONFIG = ConfigHolder(CONF_PATH)
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/syndicate/core/conf/processor.py", line 63, in __init__
+    self._init_conf_config(dir_path=dir_path)
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/syndicate/core/conf/processor.py", line 92, in _init_conf_config
+    raise AssertionError(
+AssertionError: sdct.conf does not exist inside /Users/serinetovmasyan/Desktop/epam/demo/.syndicate-config-dev folder
+2025-03-05 23:57:59,788 [INFO] USER:serinetovmasyan handlers.py:106:syndicate LOG: Configuration used: /Users/serinetovmasyan/Desktop/epam/demo/.syndicate-config-dev
+2025-03-05 23:57:59,788 [ERROR] USER:serinetovmasyan decorators.py:136:wrapper LOG: sdct.conf does not exist inside /Users/serinetovmasyan/Desktop/epam/demo/.syndicate-config-dev folder
+2025-03-05 23:57:59,788 [ERROR] USER:serinetovmasyan decorators.py:137:wrapper LOG: Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/syndicate/core/decorators.py", line 134, in wrapper
+    return_code = func(*args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/syndicate/core/handlers.py", line 107, in syndicate
+    initialize_connection()
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/syndicate/core/__init__.py", line 106, in initialize_connection
+    CONFIG = ConfigHolder(CONF_PATH)
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/syndicate/core/conf/processor.py", line 63, in __init__
+    self._init_conf_config(dir_path=dir_path)
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/syndicate/core/conf/processor.py", line 92, in _init_conf_config
+    raise AssertionError(
+AssertionError: sdct.conf does not exist inside /Users/serinetovmasyan/Desktop/epam/demo/.syndicate-config-dev folder
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/syndicate/core/decorators.py", line 134, in wrapper
+    return_code = func(*args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/syndicate/core/handlers.py", line 107, in syndicate
+    initialize_connection()
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/syndicate/core/__init__.py", line 106, in initialize_connection
+    CONFIG = ConfigHolder(CONF_PATH)
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/syndicate/core/conf/processor.py", line 63, in __init__
+    self._init_conf_config(dir_path=dir_path)
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/syndicate/core/conf/processor.py", line 92, in _init_conf_config
+    raise AssertionError(
+AssertionError: sdct.conf does not exist inside /Users/serinetovmasyan/Desktop/epam/demo/.syndicate-config-dev folder
