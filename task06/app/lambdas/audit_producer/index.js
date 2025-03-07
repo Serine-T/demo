@@ -3,9 +3,8 @@ const { v4: uuidv4 } = require("uuid");
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-const AUDIT_TABLE = process.env.AUDIT_TABLE;
-
 exports.handler = async (event) => {
+  const AUDIT_TABLE = process.env.target_table;
   const records = event.Records || [];
 
   console.log("AUDIT_TABLE", AUDIT_TABLE);
